@@ -304,7 +304,10 @@ def generator_view(request):
             }
             create_github_run(myuuid)
             response = requests.post(url, json=data, headers=headers)
-            print(response)
+            try:
+                print("GitHub dispatch response:", response.status_code, response.text)
+            except Exception:
+                print("GitHub dispatch response: (unable to print body)", response)
             if response.status_code == 204 or response.status_code == 200:
                 return render(request, 'waiting.html', {'filename':filename, 'uuid':myuuid, 'status':"Starting generator...please wait", 'platform':platform})
             else:
